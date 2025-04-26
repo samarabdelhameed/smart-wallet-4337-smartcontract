@@ -1,5 +1,9 @@
-[default]
-src = "src"
-test = "test"
+[profile.default]
+src = "contracts/src"
 out = "out"
 libs = ["lib"]
+
+remappings = [
+  "forge-std/=lib/forge-std/src/",
+  "p256-verifier/=lib/p256-verifier/src/"
+]

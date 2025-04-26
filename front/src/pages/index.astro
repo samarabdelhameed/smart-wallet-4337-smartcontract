@@ -1,13 +1,78 @@
 ---
+// استدعاء ملف الستايلات
+import "../styles/global.css";
 ---
 
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Smart Wallet 4337</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebAuthn Wallet Tester</title>
   </head>
-  <body class="bg-gray-100 min-h-screen flex items-center justify-center">
-    <h1 class="text-4xl font-bold text-purple-600">Welcome to Smart Wallet 4337 🚀</h1>
+  <body class="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+    <h1 class="text-2xl font-bold mb-8">WebAuthn Wallet Tester 🔒</h1>
+
+    <div class="flex flex-col space-y-4">
+      <button 
+        id="registerButton" 
+        class="px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600"
+      >
+        Register (Create Passkey)
+      </button>
+
+      <button 
+        id="loginButton" 
+        class="px-6 py-3 bg-green-500 text-white rounded hover:bg-green-600"
+      >
+        Login (Sign In)
+      </button>
+    </div>
+
+    <script type="module">
+      // دالة تسجيل المستخدم باستخدام WebAuthn
+      async function registerPasskey() {
+        try {
+          console.log("🔵 Starting Registration...");
+
+          const publicKeyCredentialCreationOptions = {
+            challenge: new Uint8Array(32), // لازم تيجي من السيرفر في الطبيعي
+            rp: {
+              name: "WebAuthn Wallet Tester",
+            },
+            user: {
+              id: new Uint8Array(16),
+              name: "testuser@example.com",
+              displayName: "Test User",
+            },
+            pubKeyCredParams: [{ alg: -7, type: "public-key" }],
+            authenticatorSelection: {
+              userVerification: "preferred",
+            },
+            timeout: 60000,
+            attestation: "direct",
+          };
+
+          const credential = await navigator.credentials.create({
+            publicKey: publicKeyCredentialCreationOptions,
+          });
+
+          console.log("✅ Registered Credential:", credential);
+          alert("✅ Registration successful!");
+
+        } catch (error) {
+          console.error("❌ Registration error:", error);
+          alert("❌ Registration failed!");
+        }
+      }
+
+      // دالة تسجيل الدخول (هنجهزها بعدين)
+      async function loginPasskey() {
+        alert("🟢 لسه هنجهز كود الـ Login لما نخلص الـ Register الأول!");
+      }
+
+      // ربط الأزرار بالدوال
+      document.getElementById("registerButton").addEventListener("click", registerPasskey);
+      document.getElementById("loginButton").addEventListener("click", loginPasskey);
+    </script>
   </body>
 </html>
-
